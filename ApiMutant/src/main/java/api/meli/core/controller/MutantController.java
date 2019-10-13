@@ -21,18 +21,17 @@ import api.meli.core.service.AdnService;
 @RestController
 @RequestMapping("/mutant")
 public class MutantController {
-	
+
 	@Autowired
 	private AdnService service;
-	
 
 	@PostMapping("/")
 	public HttpStatus isMutant(@RequestBody String dna) {
-		
+
 		JSONParser parser = new JSONParser();
 		char[][] matrizADN = null;
 		boolean mutante = false;
-		String cadena="";
+		String cadena = "";
 		int hashCode = 0;
 
 		try {
@@ -47,18 +46,14 @@ public class MutantController {
 			while (iterator.hasNext()) {
 
 				linea = iterator.next();
-				
 
 				if (!matrizInicializada) {
 					matrizADN = new char[linea.length()][linea.length()];
 					matrizInicializada = true;
 				}
 
-				for (int columna = 0; columna < linea.length(); columna++) {
-					char caracter = linea.charAt(columna);
-					matrizADN[fila][columna] = caracter;
-				}
-				
+				matrizADN = agregarFilaMatriz(matrizADN, linea, fila);
+
 				// verifica linea horizontal
 				if (verificarHorizontal(matrizADN[fila])) {
 					mutante = true;
@@ -67,42 +62,42 @@ public class MutantController {
 			}
 			// Verifica vertical
 			if (verificarVertical(matrizADN)) {
-				mutante=true;
+				mutante = true;
 			}
-			
+
 			// Verifica oblicua para ambos lados
 			if (verificarOblicua(matrizADN)) {
 				mutante = true;
 			}
-			
-			
-			if(service.existeAdn(hashCode)) {
-			service.guardar(new AdnEntity(jsonAr.toJSONString(),mutante,hashCode));}
-			
+
+			if (service.existeAdn(hashCode)) {
+				service.guardar(new AdnEntity(jsonAr.toJSONString(), mutante, hashCode));
+			}
+
 		} catch (ParseException e) {
 			System.out.println("Error en el JSON recibido");
 			e.printStackTrace();
 		}
-		
+
 		return mutante ? HttpStatus.OK : HttpStatus.FORBIDDEN;
 	}
-	
+
 	@GetMapping("/stats")
 	public String getEstadisticas() {
 		int countMutant = service.getCountMutant();
 		int countHuman = service.getCountHuman();
-		float ratio = countHuman == 0 ? 1 : countMutant/countHuman;
-		
+		float ratio = countHuman == 0 ? 1 : countMutant / countHuman;
+
 		JSONObject json = new JSONObject();
-		
-		json.put("count_mutant_dna",countMutant);
+
+		json.put("count_mutant_dna", countMutant);
 		json.put("count_human_dna", countHuman);
 		json.put("ratio", ratio);
 
 		return json.toJSONString();
 	}
 
-	private boolean verificarHorizontal(char[] linea) {
+	public boolean verificarHorizontal(char[] linea) {
 		for (int i = 0; (linea.length - i) >= 4; i++) {
 			if (linea[i] == linea[i + 1]) {
 				if (linea[i + 1] == linea[i + 2]) {
@@ -115,8 +110,15 @@ public class MutantController {
 		return false;
 	}
 
-	private boolean verificarOblicua(char[][] matriz) {
-//		verifica de izquierda a derecha
+	public boolean verificarOblicua(char[][] matriz) {
+
+		if (verificarOblicuaIzquierdaDerecha(matriz) || verificarOblicuaDerechaIzquierda(matriz))
+			return true;
+		return false;
+
+	}
+
+	public boolean verificarOblicuaIzquierdaDerecha(char[][] matriz) {
 		for (int i = 0; (matriz.length - i) >= 4; i++) {
 			for (int j = 0; (matriz.length - j) >= 4; j++) {
 				if (matriz[i][j] == matriz[i + 1][j + 1]) {
@@ -128,10 +130,11 @@ public class MutantController {
 				}
 			}
 		}
+		return false;
+	}
 
-//		verifica de derecha a izquierda
-
-		for (int j = 0; (matriz.length - 1) >= 4; j++) {
+	public boolean verificarOblicuaDerechaIzquierda(char[][] matriz) {
+		for (int j = 0; (matriz.length - j) >= 4; j++) {
 			for (int i = (matriz.length - 1); i >= 4; i--) {
 				if (matriz[j][i] == matriz[j + 1][i - 1]) {
 					if (matriz[j + 1][i - 1] == matriz[j + 2][i - 2]) {
@@ -159,6 +162,15 @@ public class MutantController {
 		}
 
 		return false;
+	}
+
+	public char[][] agregarFilaMatriz(char[][] matriz, String linea, int fila) {
+
+		for (int columna = 0; columna < linea.length(); columna++) {
+			char caracter = linea.charAt(columna);
+			matriz[fila][columna] = caracter;
+		}
+		return matriz;
 	}
 
 }
