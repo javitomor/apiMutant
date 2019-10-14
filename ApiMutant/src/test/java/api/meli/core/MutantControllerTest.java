@@ -3,10 +3,8 @@ package api.meli.core;
 import static org.junit.Assert.*;
 
 import org.json.simple.JSONObject;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.TestPropertySource;
@@ -112,7 +110,7 @@ public class MutantControllerTest {
 	
 	@Test
 	public void checkStatusTest() {
-		assertEquals("ok",controller.checkStatus());
+		assertEquals(HttpStatus.OK,controller.checkStatus());
 	}
 	
 	@Test

@@ -23,8 +23,8 @@ public class MutantController {
 	AdnService service = new AdnService();
 
 	@GetMapping("/status")
-	public String checkStatus() {
-		return "ok";
+	public HttpStatus checkStatus() {
+		return HttpStatus.OK;
 	 }
 	
 	@GetMapping("/info")

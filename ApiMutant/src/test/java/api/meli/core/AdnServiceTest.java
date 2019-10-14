@@ -6,9 +6,9 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -21,8 +21,8 @@ import api.meli.core.service.AdnService;
 @TestPropertySource(locations = "/source/application_test.properties")
 public class AdnServiceTest {
 
-	@Autowired
-	private AdnService service;
+	
+	private AdnService service = new AdnService();
 
 	public String getCadenaMutante() {
 		JSONArray cadenaM1 = new JSONArray();

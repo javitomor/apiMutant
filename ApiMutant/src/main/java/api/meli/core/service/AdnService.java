@@ -10,7 +10,7 @@ import api.meli.core.repository.AdnRepository;
 public class AdnService {
 
 	@Autowired
-	private AdnRepository repositorio;
+	 AdnRepository repositorio;
 
 	public boolean guardar(AdnEntity entidad) {
 		try {
