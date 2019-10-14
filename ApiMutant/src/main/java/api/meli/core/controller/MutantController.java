@@ -24,6 +24,23 @@ public class MutantController {
 	@Autowired
 	private AdnService service;
 
+	@GetMapping("/status")
+	public String checkStatus() {
+		return "ok";
+	 }
+	
+	@GetMapping("/info")
+	public String info() {
+		JSONObject contacto = new JSONObject();
+		contacto.put("nombre", "Javier");
+		contacto.put("apellido", "Moreno");
+		contacto.put("telefono", "2616631427");
+		contacto.put("correo", "javiermoreno1986@gmail.com");
+		contacto.put("lenguaje", "Java");
+		contacto.put("senioriry","Jr");
+		return contacto.toJSONString();
+	}
+
 	@PostMapping("/")
 	public HttpStatus isMutant(@RequestBody String dna) {
 
@@ -69,20 +86,40 @@ public class MutantController {
 				mutante = true;
 			}
 
-			service.guardar(new AdnEntity(jsonAr.toJSONString(), mutante, hashCode));
+			try {
+				if (service.guardar(new AdnEntity(jsonAr.toString(), mutante, hashCode))) {
+					System.out.println("La cadena no estaba en la base de datos");
+				} else {
+					System.out.println("La cadena estaba en la base de datos");
+				}
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+				return HttpStatus.INTERNAL_SERVER_ERROR;
+			}
 
 		} catch (ParseException e) {
 			System.out.println("Error en el JSON recibido");
 			e.printStackTrace();
 		}
-
 		return mutante ? HttpStatus.OK : HttpStatus.FORBIDDEN;
+
 	}
 
 	@GetMapping("/stats")
 	public String getEstadisticas() {
-		int countMutant = service.getCountPerson(true);
-		int countHuman = service.getCountPerson(false);
+		int countMutant = 0;
+		int countHuman = 0;
+
+		try {
+			countMutant = service.getCountPerson(true);
+		} catch (NullPointerException e) {
+			countMutant = 0;
+		}
+		try {
+			countHuman = service.getCountPerson(false);
+		} catch (NullPointerException e) {
+			countHuman = 0;
+		}
 		float ratio = countHuman == 0 ? 1 : countMutant / countHuman;
 
 		JSONObject json = new JSONObject();
@@ -145,7 +182,7 @@ public class MutantController {
 		return false;
 	}
 
-	private boolean verificarVertical(char[][] matriz) {
+	public boolean verificarVertical(char[][] matriz) {
 		for (int i = 0; (matriz.length) > i; i++) {
 			for (int j = 0; (matriz.length - j) >= 4; j++) {
 				if (matriz[j][i] == matriz[j + 1][i]) {
@@ -171,6 +208,3 @@ public class MutantController {
 	}
 
 }
-
-//  { "dna":["TCACTG","ATGCGA","CAGTGC","TTATGT","AGAAGG","CCCCTA"] } 
-//  { "dna":["TCACTG","AGCGTA","CGTGAC","TGTATT","GGAAGA","ATCCCC"] }

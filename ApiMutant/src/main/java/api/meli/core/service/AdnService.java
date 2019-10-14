@@ -14,12 +14,13 @@ public class AdnService {
 
 	public boolean guardar(AdnEntity entidad) {
 		try {
-			if (!existeAdn(entidad.getHashCode())) {
+			if (existeAdn(entidad.getHashCode())) {
 				repositorio.save(entidad);
 				return true;
 			}
-		} catch (Exception e) {
+		} catch (NullPointerException e) {
 			e.printStackTrace();
+			return false;
 
 		}
 		return false;
@@ -27,12 +28,13 @@ public class AdnService {
 
 	public boolean existeAdn(int hashCode) {
 		try {
-			AdnEntity entity = repositorio.findByHashCode(hashCode);
+			AdnEntity entity = new AdnEntity();
+			entity = repositorio.findByHashCode(hashCode);
 			if (entity.getId() != 0)
-				return true;
+				return false;
 
-		} catch (Exception e) {
-			return false;
+		} catch (NullPointerException e) {
+			return true;
 		}
 		return false;
 
@@ -42,10 +44,10 @@ public class AdnService {
 		try {
 			int cantidad = repositorio.countByIsMutant(mutant);
 			return cantidad >= 0 ? cantidad : 0;
-		}catch(NullPointerException e) {
+		} catch (NullPointerException e) {
 			return 0;
 		}
-		
+
 	}
 
 }

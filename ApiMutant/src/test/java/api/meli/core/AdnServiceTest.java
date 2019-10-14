@@ -92,4 +92,7 @@ public class AdnServiceTest {
 		assertTrue(service.getCountPerson(false)>=0);
 	}
 
+	public AdnServiceTest() {
+	}
+
 }

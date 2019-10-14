@@ -3,10 +3,12 @@ package api.meli.core;
 import static org.junit.Assert.*;
 
 import org.json.simple.JSONObject;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -20,6 +22,9 @@ public class MutantControllerTest {
 
 	@Autowired
 	AdnService service;
+	
+	
+	AdnServiceTest service_test = new AdnServiceTest();
 
 	MutantController controller = new MutantController();
 	
@@ -45,40 +50,41 @@ public class MutantControllerTest {
 				};
 	
 	@Test
-	public void verificarHorizontalTrueTest() {
+	public void verificarHorizontalTest() {
 		
 		boolean res = controller.verificarHorizontal(lineaMutante);
 		assertEquals(true, res);
+		res = controller.verificarHorizontal(lineaHumano);
+		assertEquals(false, res);
 	}
 	
 	@Test
-	public void verificarHorizontalFalseTest() { 
-		boolean res = controller.verificarHorizontal(lineaHumano);
-		assertEquals(false, res);	
-	}
-	
-	@Test
-	public void verificarOblicuaTrueTest() {
-		
+	public void verificarOblicuaTest() {
+//		ok
 		boolean resTodo = controller.verificarOblicua(matrizTodo);
 		boolean resDerIz = controller.verificarOblicuaDerechaIzquierda(matrizOblicuaDerechaIzquierda);
 		boolean resIzDer = controller.verificarOblicuaIzquierdaDerecha(matrizTodo);
 		assertEquals(true, resTodo);
 		assertEquals(true, resDerIz);
 		assertEquals(true, resIzDer);
+		
+//		falla
+		resDerIz = controller.verificarOblicuaDerechaIzquierda(matrizTodo);
+		resIzDer = controller.verificarOblicuaIzquierdaDerecha(matrizOblicuaDerechaIzquierda);
+		assertEquals(false, resDerIz);
+		assertEquals(false, resIzDer);
 	}
 	
 	@Test
-	public void verificarOblicuoFalseTest() {
-		boolean resDerIz = controller.verificarOblicuaDerechaIzquierda(matrizTodo);
-		boolean resIzDer = controller.verificarOblicuaIzquierdaDerecha(matrizOblicuaDerechaIzquierda);
-		assertEquals(false, resDerIz);
-		assertEquals(false, resIzDer);	
+	public void verificarVerticalTest() {
+		assertEquals(true,controller.verificarVertical(matrizTodo));
+		assertEquals(false,controller.verificarVertical(matrizOblicuaDerechaIzquierda));
 	}
+	
 
 	@Test
 	public void agregarFilaMatrizTest() {
-		String linea = "CAGTGC";
+		String linea = lineaMutante.toString();
 		char matriz[][]=new char[linea.length()][linea.length()];
 		int fila = 0;
 		matriz = controller.agregarFilaMatriz(matriz, linea, fila);
@@ -86,6 +92,7 @@ public class MutantControllerTest {
 	}
 	
 	@Test
+	@Ignore
 	public void getEstadisticasTest() {
 		
 		int countMutant = service.getCountPerson(true);
@@ -98,8 +105,14 @@ public class MutantControllerTest {
 		json.put("count_human_dna", countHuman);
 		json.put("ratio", ratio);
 
-		assertTrue(json.toJSONString()==controller.getEstadisticas());
+		assertEquals(json.toJSONString(),controller.getEstadisticas());
 	}
 	
+	@Test
+	@Ignore
+	public void isMutantTest() {
+		assertEquals(HttpStatus.OK,controller.isMutant(service_test.getCadenaMutante()));
+		assertEquals(HttpStatus.FORBIDDEN,controller.isMutant(service_test.getCadenaHumano()));
+	}
 
 }
