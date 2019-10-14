@@ -6,7 +6,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,8 +20,7 @@ import api.meli.core.service.AdnService;
 @RequestMapping("/mutant")
 public class MutantController {
 
-	@Autowired
-	private AdnService service;
+	AdnService service = new AdnService();
 
 	@GetMapping("/status")
 	public String checkStatus() {

@@ -20,12 +20,9 @@ import api.meli.core.service.AdnService;
 @TestPropertySource(locations = "/source/application_test.properties")
 public class MutantControllerTest {
 
-	@Autowired
-	AdnService service;
 	
-	
+	AdnService service = new AdnService();
 	AdnServiceTest service_test = new AdnServiceTest();
-
 	MutantController controller = new MutantController();
 	
 	private char[] lineaHumano = {'C','C','C','G','T','A'};
@@ -92,7 +89,6 @@ public class MutantControllerTest {
 	}
 	
 	@Test
-	@Ignore
 	public void getEstadisticasTest() {
 		
 		int countMutant = service.getCountPerson(true);
@@ -109,10 +105,27 @@ public class MutantControllerTest {
 	}
 	
 	@Test
-	@Ignore
 	public void isMutantTest() {
 		assertEquals(HttpStatus.OK,controller.isMutant(service_test.getCadenaMutante()));
 		assertEquals(HttpStatus.FORBIDDEN,controller.isMutant(service_test.getCadenaHumano()));
+	}
+	
+	@Test
+	public void checkStatusTest() {
+		assertEquals("ok",controller.checkStatus());
+	}
+	
+	@Test
+	public void contactoTest() {
+		JSONObject contacto = new JSONObject();
+		contacto.put("nombre", "Javier");
+		contacto.put("apellido", "Moreno");
+		contacto.put("telefono", "2616631427");
+		contacto.put("correo", "javiermoreno1986@gmail.com");
+		contacto.put("lenguaje", "Java");
+		contacto.put("senioriry","Jr");
+		
+		assertEquals(contacto.toJSONString(),controller.info());
 	}
 
 }
