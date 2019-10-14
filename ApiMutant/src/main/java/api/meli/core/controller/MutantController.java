@@ -8,7 +8,6 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -70,9 +69,7 @@ public class MutantController {
 				mutante = true;
 			}
 
-			if (service.existeAdn(hashCode)) {
-				service.guardar(new AdnEntity(jsonAr.toJSONString(), mutante, hashCode));
-			}
+			service.guardar(new AdnEntity(jsonAr.toJSONString(), mutante, hashCode));
 
 		} catch (ParseException e) {
 			System.out.println("Error en el JSON recibido");
@@ -84,8 +81,8 @@ public class MutantController {
 
 	@GetMapping("/stats")
 	public String getEstadisticas() {
-		int countMutant = service.getCountMutant();
-		int countHuman = service.getCountHuman();
+		int countMutant = service.getCountPerson(true);
+		int countHuman = service.getCountPerson(false);
 		float ratio = countHuman == 0 ? 1 : countMutant / countHuman;
 
 		JSONObject json = new JSONObject();

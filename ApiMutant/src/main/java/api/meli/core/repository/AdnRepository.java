@@ -10,8 +10,8 @@ import api.meli.core.entity.AdnEntity;
 @Repository("adnRepository")
 public interface AdnRepository extends JpaRepository<AdnEntity, Serializable>{
 	
-	public abstract AdnEntity findByHashCode(int hashCode);
 	
+	public abstract AdnEntity findByHashCode(int hashCode);
 	public abstract int countByIsMutant(boolean isMutant);
 
 }
