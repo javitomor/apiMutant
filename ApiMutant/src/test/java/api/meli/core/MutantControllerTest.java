@@ -104,8 +104,14 @@ public class MutantControllerTest {
 	
 	@Test
 	public void isMutantTest() {
-		assertEquals(HttpStatus.OK,controller.isMutant(service_test.getCadenaMutante()));
-		assertEquals(HttpStatus.FORBIDDEN,controller.isMutant(service_test.getCadenaHumano()));
+		assertEquals(true,controller.isMutant(service_test.getCadenaMutante()));
+		assertEquals(false,controller.isMutant(service_test.getCadenaHumano()));
+	}
+	
+	@Test
+	public void veridicarCadenaCompletaTest() {
+		assertEquals(HttpStatus.OK,controller.verificarCadenaAdn(service_test.getCadenaMutante()));
+		assertEquals(HttpStatus.FORBIDDEN,controller.verificarCadenaAdn(service_test.getCadenaHumano()));
 	}
 	
 	@Test

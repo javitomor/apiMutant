@@ -43,7 +43,16 @@ public class MutantController {
 	}
 
 	@PostMapping("/")
-	public HttpStatus isMutant(@RequestBody String dna) {
+	public HttpStatus verificarCadenaAdn(@RequestBody String dna) {
+	
+		boolean res = isMutant(dna);
+		
+		return res ? HttpStatus.OK: HttpStatus.FORBIDDEN;
+		
+	}
+	
+	
+	public boolean isMutant(String dna) {
 
 		JSONParser parser = new JSONParser();
 		char[][] matrizADN = null;
@@ -95,14 +104,13 @@ public class MutantController {
 				}
 			} catch (NullPointerException e) {
 				e.printStackTrace();
-				return HttpStatus.INTERNAL_SERVER_ERROR;
 			}
 
 		} catch (ParseException e) {
 			System.out.println("Error en el JSON recibido");
 			e.printStackTrace();
 		}
-		return mutante ? HttpStatus.OK : HttpStatus.FORBIDDEN;
+		return mutante ? true : false;
 
 	}
 
