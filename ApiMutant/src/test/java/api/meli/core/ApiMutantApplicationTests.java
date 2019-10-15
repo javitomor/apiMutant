@@ -20,13 +20,6 @@ import api.meli.core.service.AdnService;
 //@Sql("/source/test.sql")
 public class ApiMutantApplicationTests {
 
-	@Autowired
-	AdnService service;
-	
-	MutantController controller = new MutantController();
-
-	
-
 	@Test
 	@Ignore
 	public void failTest() {

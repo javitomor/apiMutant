@@ -22,7 +22,7 @@ import api.meli.core.service.AdnService;
 public class AdnServiceTest {
 
 	
-	private AdnService service = new AdnService();
+	public AdnService service = new AdnService();
 
 	public String getCadenaMutante() {
 		JSONArray cadenaM1 = new JSONArray();

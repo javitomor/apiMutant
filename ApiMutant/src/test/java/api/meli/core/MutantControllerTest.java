@@ -12,15 +12,15 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import api.meli.core.controller.MutantController;
 import api.meli.core.service.AdnService;
+//import api.meli.core.AdnServiceTest;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @TestPropertySource(locations = "/source/application_test.properties")
 public class MutantControllerTest {
 
-	
-	AdnService service = new AdnService();
 	AdnServiceTest service_test = new AdnServiceTest();
+	AdnService service = new AdnService();
 	MutantController controller = new MutantController();
 	
 	private char[] lineaHumano = {'C','C','C','G','T','A'};
