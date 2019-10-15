@@ -3,7 +3,7 @@ Documentación de Uso de API para detectar cadena de ADN Mutante.
 Los endpoint disponibles son los siguiente:
 *******************************************************************************************************************************
 | Determina si una cadena de adn corresponde a un mutante o a un humano y devuelve los estados ok y forbidden
-| endpoint: "/mutant/"
+| endpoint: "http://xmen.us-west-2.elasticbeanstalk.com/mutant/"
 | method: POST
 | tipo parametros entrada:  json
 |       formato json: { “dna”:["XXXXXX","XXXXXX","XXXXXX","XXXXXX","XXXXXX","XXXXXX"] } los caracteres "X" solo pueden 
@@ -14,7 +14,7 @@ Los endpoint disponibles son los siguiente:
 
 *******************************************************************************************************************************
 | Devuelve las estadisticas de las lecturas de las cadenas de adn que se le han enviado para procesar
-| endopoint:"/mutant/stats"
+| endopoint:"http://xmen.us-west-2.elasticbeanstalk.com/mutant/stats"
 | method: GET
 | tipo parametros entrada:  (ninguno)
 | parametros de salida: json
@@ -26,7 +26,7 @@ Los endpoint disponibles son los siguiente:
 
 *******************************************************************************************************************************
 | Muestra el estado de salud del servidor
-| endpoint: "/mutant/status"
+| endpoint: "http://xmen.us-west-2.elasticbeanstalk.com/mutant/status"
 | method: GET
 | tipo paramentros entrada: (ninguno)
 | parametros de salida: HTTP 200-OK indicando si el servidor esta en servicio o no
@@ -34,8 +34,7 @@ Los endpoint disponibles son los siguiente:
 
 *******************************************************************************************************************************
 | Muestra información de contacto del postulante
-| endpoint: "/mutant/info"
-| endpoint: "/mutant/info"
+| endpoint: "http://xmen.us-west-2.elasticbeanstalk.com/mutant/info"
 | method: GET
 | tipo parametros entrada: (ninguno)
 | paramentros de salida: json
